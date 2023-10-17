@@ -4,8 +4,8 @@ import (
 	"encoding/hex"
 	"strings"
 
-	coretypes "github.com/cometbft/cometbft/rpc/core/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	coretypes "github.com/tendermint/tendermint/rpc/core/types"
 )
 
 // NewResponseFormatBroadcastTxCommit returns a TxResponse given a

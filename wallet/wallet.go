@@ -42,6 +42,23 @@ func NewWallet(accountCfg *types.AccountConfig, client *client.Client, txConfig 
 	}, nil
 }
 
+// CloneWalletOffset allows to build a new Wallet instance from an existing wallet with a private key offset
+func (w *Wallet) CloneWalletOffset(offset byte) (*Wallet, error) {
+	algo := hd.Secp256k1
+
+	oldKey := w.privKey.(*secp256k1.PrivKey)
+
+	newKey := make([]byte, 32)
+	copy(newKey, oldKey.Key)
+	newKey[0] += offset
+
+	return &Wallet{
+		privKey:  algo.Generate()(newKey),
+		TxConfig: w.TxConfig,
+		Client:   w.Client,
+	}, nil
+}
+
 // AccAddress returns the address of the account that is going to be used to sign the transactions
 func (w *Wallet) AccAddress() string {
 	bech32Addr, err := bech32.ConvertAndEncode(w.Client.GetAccountPrefix(), w.privKey.PubKey().Address())
