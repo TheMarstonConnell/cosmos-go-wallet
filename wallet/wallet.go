@@ -42,6 +42,20 @@ func NewWallet(accountCfg *types.AccountConfig, client *client.Client, txConfig 
 	}, nil
 }
 
+// NewWalletFromKey allows to build a new Wallet instance using a private key instead of a seed
+func NewWalletFromKey(key []byte, client *client.Client, txConfig sdkclient.TxConfig) (*Wallet, error) {
+
+	k := secp256k1.PrivKey{
+		Key: key,
+	}
+
+	return &Wallet{
+		privKey:  &k,
+		TxConfig: txConfig,
+		Client:   client,
+	}, nil
+}
+
 // CloneWalletOffset allows to build a new Wallet instance from an existing wallet with a private key offset
 func (w *Wallet) CloneWalletOffset(offset byte) (*Wallet, error) {
 	algo := hd.Secp256k1
